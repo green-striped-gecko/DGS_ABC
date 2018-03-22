@@ -3,17 +3,19 @@ library(secr)
 #create a landscape
 nx=50
 ny=50
+
+
+#for continuous landscapes etc marcos generator
 set.seed(555) #(to make sure we have the same example running)
 tempmask<-secr::make.mask(nx=nx,ny=ny,spacing=1)
 r <- secr::raster(randomHabitat(tempmask, p = 0.5, A = 0.5))
 #set non-habitat to friction values of 10
-values(r)[is.na(values(r))==T]<-10
+values(r)[is.na(values(r))==T]<- 10
 plot(r)
-
-
-
 landscape<- r 
 
+
+#make sure n populations are mindist apart and in habitat
 ############################
 createpops <- function(n, mindist, landscape, plot=TRUE)
 {  
@@ -78,7 +80,7 @@ para$n.allels <- 10
 para$n.loci <- 20
 para$mut.rate <- 0.001
 
-para$method <- "leastcost" #rSPDdistance, commute
+para$method <- "leastcost" #rSPDdistance, commute (explore )
 para$NN <- 8  #number of neighbours for the cost distance method
 
 
@@ -106,10 +108,6 @@ text(para$locs[,1],para$locs[,2], row.names(para$locs), cex=1.5)
 
 
 
-
-
-
-
 ## a single run...
 simpops <- PopGenReport::init.popgensim(para$n.pops, para$n.ind, para$sex.ratio,para$n.loci, para$n.allels, para$locs, para$n.cov )  
 #run for 100 generations
@@ -123,8 +121,19 @@ round(mmod::pairwise_Gst_Nei(gi),3)
 
 
 
+
 #now we need to write a loop around the single run changing the resistance value (proposal function) and store the summary statistics and the resistance value in a data.frame....
 
+#generate the landscape with a different restistance (1:30)
+#update the landscape
+#calculate the new cost matrix
+#run the simulation as before
+#record summary statistc and restistance value
+
+#github names
+# marcosci
+# sangeetabhatia03
+# mvanack
 
 
 
