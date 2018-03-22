@@ -130,10 +130,15 @@ round(mmod::pairwise_Gst_Nei(gi),3)
 #run the simulation as before
 #record summary statistc and restistance value
 
+<<<<<<< HEAD
 #github names
 # marcosci
 # sangeetabhatia03
 # mvanack
+=======
+
+
+>>>>>>> a3d3d7950d1a8566cbd47838e2ce90520bc8cae3
 
 
 
