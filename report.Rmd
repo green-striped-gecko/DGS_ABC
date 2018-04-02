@@ -1,0 +1,10 @@
+---
+title: "First results"
+author: Marco
+output: html_document
+---
+
+# Idea
+
+
+# First results
