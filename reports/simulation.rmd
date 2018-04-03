@@ -10,24 +10,6 @@ fontsize: 11pt
 spacing: double
 bibliography: 
 biblio-style: apsr
-params: 
-  nx:50
-  ny:50
-  p:0.5
-  A:0.5
-  res:10
-  n.pops:8
-  n.ind:100
-  sex.ratio:0.5
-  n.offspring:2
-  mig.rate:0.1
-  disp.max:50
-  disp.rate:0.05
-  n.allels:10
-  n.loci:20
-  mut.rate:0.001
-  method:leastcost
-  NN:8  
 ---
 
 ```{r setup, eval = TRUE}
@@ -38,26 +20,52 @@ library(ggplot2)
 library(PopGenReport)
 library(secr)
 ```
+## Read in parameter values
+
+```{r}
+params <- here::here("R", "params.R")
+source("params.R")
+
+```
 
 ## Landscape Simulation
 
 ```{r ls_params}
 
-nx <- params$nx
-nx
-params$ny
-params$p
-params$A
-mask <- secr::make.mask(nx = params$nx,
-                        ny = params$ny,
+mask <- secr::make.mask(nx = nx,
+                        ny = ny,
                         spacing = 1)
-#habitat <- randomHabitat(mask, p = params$p, A = params$A)
-#rstr <- secr::raster(habitat)
+habitat <- secr::randomHabitat(mask, p = p, A = A)
+rstr    <- secr::raster(habitat)
 
-#values(rstr)[is.na(values(rstr)) == T] <- params$res
-#landscape <- rstr
+values(rstr)[is.na(values(rstr)) == T] <- res
+landscape <- rstr
 
 ```
 
 
-## Population Simulation 
+## Population Initialization
+
+```{r}
+pops <- create_pops(n.pops, 
+                    2,
+                    landscape)
+
+```
+
+
+# initialize the populations ----
+pop_new <- init_pops(n_pops    =  para$n_pops,
+                     n_ind     =  para$n_ind,
+                     sex_ratio =  para$sex_ratio,
+                     n_allels  =  para$n_allels,
+                     n_loci    =  para$n_loci,
+                     n_cov     =  para$n_cov,
+                     pops      =  pops)
+
+
+# plan(batchtools_lsf)
+plan(multisession)  
+y <- future_lapply(para$resistance,
+                   FUN =  simulate_abc,
+                   rep_resistance = para$rep_resistance)
