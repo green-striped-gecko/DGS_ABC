@@ -1,0 +1,63 @@
+---
+output: html_document
+author:
+- name: Sangeeta Bhatia
+  affiliation: Imperial College London
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+geometry: margin=1in
+fontfamily: mathpazo
+fontsize: 11pt
+spacing: double
+bibliography: 
+biblio-style: apsr
+params: 
+  nx:50
+  ny:50
+  p:0.5
+  A:0.5
+  res:10
+  n.pops:8
+  n.ind:100
+  sex.ratio:0.5
+  n.offspring:2
+  mig.rate:0.1
+  disp.max:50
+  disp.rate:0.05
+  n.allels:10
+  n.loci:20
+  mut.rate:0.001
+  method:leastcost
+  NN:8  
+---
+
+```{r setup, eval = TRUE}
+
+library(dplyr)
+library(magrittr)
+library(ggplot2)
+library(PopGenReport)
+library(secr)
+```
+
+## Landscape Simulation
+
+```{r ls_params}
+
+nx <- params$nx
+nx
+params$ny
+params$p
+params$A
+mask <- secr::make.mask(nx = params$nx,
+                        ny = params$ny,
+                        spacing = 1)
+#habitat <- randomHabitat(mask, p = params$p, A = params$A)
+#rstr <- secr::raster(habitat)
+
+#values(rstr)[is.na(values(rstr)) == T] <- params$res
+#landscape <- rstr
+
+```
+
+
+## Population Simulation 
