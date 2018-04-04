@@ -51,21 +51,26 @@ pops <- create_pops(n.pops,
                     2,
                     landscape)
 
+pop_new <- init_pops(n_pops    =  n_pops,
+                     n_ind     =  n_ind,
+                     sex_ratio =  sex_ratio,
+                     n_allels  =  n_allels,
+                     n_loci    =  n_loci,
+                     n_cov     =  3,
+                     pops      =  pops)
+
 ```
 
+## Simulation
 
-# initialize the populations ----
-pop_new <- init_pops(n_pops    =  para$n_pops,
-                     n_ind     =  para$n_ind,
-                     sex_ratio =  para$sex_ratio,
-                     n_allels  =  para$n_allels,
-                     n_loci    =  para$n_loci,
-                     n_cov     =  para$n_cov,
-                     pops      =  pops)
+For each value of resistance, update the landscape, simulate
+population and calculate summary statistics. Do this multiple times. 
+
+
 
 
 # plan(batchtools_lsf)
 plan(multisession)  
-y <- future_lapply(para$resistance,
+y <- future_lapply(resistance,
                    FUN =  simulate_abc,
-                   rep_resistance = para$rep_resistance)
+                   rep_resistance = rep_resistance)
