@@ -1,0 +1,39 @@
+---
+output: 
+  pdf_document:
+    citation_package: natbib
+    keep_tex: true
+    fig_caption: true
+    latex_engine: pdflatex
+title: 
+author:
+- name: Sangeeta Bhatia
+abstract: 
+keywords: 
+date: "YY"
+geometry: margin=1in
+fontfamily: mathpazo
+fontsize: 11pt
+spacing: double
+bibliography: 
+biblio-style: apsr
+endnote: no
+---
+
+```{r setup, eval = TRUE}
+library(dplyr)
+library(abc)
+```
+
+# Load Data
+
+```{r load, eval = TRUE}
+test_data <- here::here("data", "testdata.rds") %>%
+             readRDS
+```
+# Data preparation
+
+## Observed summary statistics
+
+```
+```
