@@ -1,0 +1,84 @@
+---
+output: 
+  pdf_document:
+    citation_package: natbib
+    keep_tex: false
+    fig_caption: true
+    latex_engine: pdflatex
+title: Landscape resistance inference using abc
+geometry: margin=1in
+fontfamily: mathpazo
+fontsize: 11pt
+spacing: double
+bibliography: 
+biblio-style: apsr
+endnote: no
+---
+
+```{r setup, eval = TRUE}
+library(dplyr)
+library(abc)
+```
+
+# Load Data
+
+```{r load, eval = TRUE}
+
+obs_data <- here::here("data", "observed.rds") %>% readRDS
+sim_data <- here::here("data", "testdata.rds") %>% readRDS
+
+```
+# Data preparation
+
+## Observed summary statistics
+
+```{r}
+obs_stats <- obs_data$summary_stat[[1]] %>%
+             `[`( lower.tri(obs_data$summary_stat[[1]]))
+
+```
+
+## Simulated summary statistics
+
+"abc" package requires a matrix of the simulated summary statistics, 
+where each row corresponds to a simulation and each column corresponds 
+to a summary statistic and a matrix of the simulated parameter values, 
+where each row corresponds to a simulation and each column corresponds 
+to a parameter. 
+
+```{r}
+
+sim_stats <- matrix(NA, nrow = 999 * 20, ncol = 28)
+sim_param <- matrix(NA, nrow = 999 * 20, ncol = 1)
+row <- 1
+for (resistance in sim_data){
+    for (sum_stat in resistance$summary_stat){
+        sim_stats[row, ] <- sum_stat %>% `[`(lower.tri(.))
+        sim_param[row, ] <- resistance$resistance
+        row <- row + 1
+    }    
+}    
+    
+```
+
+## Parameter Inference
+
+```{r}
+
+res <- abc(target = obs_stats,
+           param = sim_param,
+           sumstat = sim_stats,
+           tol = 0.05, method="neuralnet")
+
+
+```
+
+## Diagnostics
+
+```{r}
+plot(res, param = sim_param)
+```
+
+```{r}
+hist(res)
+```
