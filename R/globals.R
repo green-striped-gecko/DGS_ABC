@@ -27,5 +27,5 @@ steps       = 100,          # steps for the genetic simulation
 
 # Resistance values to be used in our simulation ----
 resistance = 1:20,
-rep_resistance = 1:999
+rep_resistance = 1:100
 )
