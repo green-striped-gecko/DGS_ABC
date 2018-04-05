@@ -1,2 +1,0 @@
-n.pops, n.ind, sex.ratio, n.offspring, mig.rate, disp.max, disp.rate, n.allels, n.loci, mut.rate, method, NN
-8, 100, 0.5, 2, 0.1, 50, 0.05, 10, 20, 0.001, leastcost, 8

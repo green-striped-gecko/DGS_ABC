@@ -1,6 +1,8 @@
 ---
 output: html_document
 author:
+- name: Marco Sciaini
+  affiliation: University of Goettingen
 - name: Sangeeta Bhatia
   affiliation: Imperial College London
 date: "`r format(Sys.time(), '%d %B, %Y')`"
@@ -23,40 +25,37 @@ library(secr)
 ## Read in parameter values
 
 ```{r}
-params <- here::here("R", "params.R")
-source("params.R")
-
+# source packages, function and parameters
+source("../R/packages.R")
+source("../R/functions_landscape.R")
+source("../R/functions_population.R")
+source("../R/globals.R")
 ```
 
 ## Landscape Simulation
 
 ```{r ls_params}
-
-mask <- secr::make.mask(nx = nx,
-                        ny = ny,
-                        spacing = 1)
-habitat <- secr::randomHabitat(mask, p = p, A = A)
-rstr    <- secr::raster(habitat)
-
-values(rstr)[is.na(values(rstr)) == T] <- res
-landscape <- rstr
-
+# simulate initial landscape ----
+landscape <- simulate_landscape_discrete(para$n_col,
+                                         para$n_row,
+                                         germs = 100)
 ```
 
 
 ## Population Initialization
 
 ```{r}
-pops <- create_pops(n.pops, 
+pops <- create_pops(para$n_pops, 
                     2,
                     landscape)
 
-pop_new <- init_pops(n_pops    =  n_pops,
-                     n_ind     =  n_ind,
-                     sex_ratio =  sex_ratio,
-                     n_allels  =  n_allels,
-                     n_loci    =  n_loci,
-                     n_cov     =  3,
+# initialize the populations ----
+pop_new <- init_pops(n_pops    =  para$n_pops,
+                     n_ind     =  para$n_ind,
+                     sex_ratio =  para$sex_ratio,
+                     n_allels  =  para$n_allels,
+                     n_loci    =  para$n_loci,
+                     n_cov     =  para$n_cov,
                      pops      =  pops)
 
 ```
@@ -67,10 +66,10 @@ For each value of resistance, update the landscape, simulate
 population and calculate summary statistics. Do this multiple times. 
 
 
-
-
-# plan(batchtools_lsf)
+```{r}
 plan(multisession)  
-y <- future_lapply(resistance,
+y <- future_lapply(para$resistance,
                    FUN =  simulate_abc,
-                   rep_resistance = rep_resistance)
+                   rep_resistance = para$rep_resistance)
+```
+
