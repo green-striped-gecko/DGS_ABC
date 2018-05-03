@@ -104,7 +104,7 @@ points(para$locs[,1], para$locs[,2], pch=16, cex=2, col="orange")
 text(para$locs[,1],para$locs[,2], row.names(para$locs), cex=1.5)
 
 
-simsteps <- 50
+simsteps <- 100
 
 #reference data set
 simpops <- PopGenReport::init.popgensim(para$n.pops, para$n.ind, para$sex.ratio,para$n.loci, para$n.allels, para$locs, para$n.cov )
@@ -150,8 +150,8 @@ res[i, ]<- c(resis, sum((sss.dummy-sss.ref)^2))
 cat(paste("Run",i,"."))
 cat(paste("Took:", round((proc.time()[3]-tt) / 60,2),"minutes.\n"))
 flush.console()
-if (i %%10 == 0) {
-  th <- quantile(res$sss,probs=0.01)
+if (i %%20 == 0) {
+  th <- quantile(res$sss,probs=0.2)
   plot(density(res$resistance[res$sss<th]))
   abline(v=10, col="red")
 }

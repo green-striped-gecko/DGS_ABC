@@ -34,6 +34,18 @@
 #2. Predict some relationships
 #3. do some test runs
 
+#4. chosen: popgenreport
+#5. Todo: convert into parallel, 
+#         test different summary statistics
+#         decide on scenarios
+
+
+
+
+
+
+
+
 
 
 
