@@ -114,7 +114,7 @@ gi <- PopGenReport::pops2genind(simpops)
 simpops <- PopGenReport::run.popgensim(simpops, steps=simsteps, cost.mat, n.offspring=para$n.offspring, n.ind=para$n.ind, para$mig.rate, para$disp.max, para$disp.rate,  para$n.allels, para$mut.rate, n.cov=para$n.cov, rec="none")
 #convert to genind object (smaller)
 gi <- PopGenReport::pops2genind(simpops)
-sss.ref <- mean(as.dist(pairwise.fstb(gi)))
+sss.ref <- as.dist(pairwise.fstb(gi))
 
 
 
@@ -144,14 +144,14 @@ simpops <- PopGenReport::init.popgensim(para$n.pops, para$n.ind, para$sex.ratio,
 simpops <- PopGenReport::run.popgensim(simpops, steps=simsteps, cost.mat, n.offspring=para$n.offspring, n.ind=para$n.ind, para$mig.rate, para$disp.max, para$disp.rate,  para$n.allels, para$mut.rate, n.cov=para$n.cov, rec="none")
 #convert to genind object (smaller)
 gi <- PopGenReport::pops2genind(simpops)
-sss.dummy <- mean(as.dist(pairwise.fstb(gi)))
-res[i, ]<- c(resis, abs(sss.dummy-sss.ref))
+sss.dummy <- as.dist(pairwise.fstb(gi))
+res[i, ]<- c(resis, sum((sss.dummy-sss.ref)^2))
 
 cat(paste("Run",i,"."))
 cat(paste("Took:", round((proc.time()[3]-tt) / 60,2),"minutes.\n"))
 flush.console()
 if (i %%10 == 0) {
-  th <- quantile(res$sss,probs=0.2)
+  th <- quantile(res$sss,probs=0.01)
   plot(density(res$resistance[res$sss<th]))
   abline(v=10, col="red")
 }
