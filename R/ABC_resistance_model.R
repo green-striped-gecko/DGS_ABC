@@ -76,8 +76,8 @@ para$disp.max=50   #average  dispersal of an individual in meters
 para$disp.rate = 0.05 #proportion of dispersing individuals
 
 #Define genetics
-para$n.allels <- 10
-para$n.loci <- 20
+para$n.allels <- 2
+para$n.loci <- 1000
 para$mut.rate <- 0.001
 
 para$method <- "leastcost" #rSPDdistance, commute (explore )
@@ -111,7 +111,7 @@ text(para$locs[,1],para$locs[,2], row.names(para$locs), cex=1.5)
 ## a single run...
 simpops <- PopGenReport::init.popgensim(para$n.pops, para$n.ind, para$sex.ratio,para$n.loci, para$n.allels, para$locs, para$n.cov )  
 #run for 100 generations
-simpops <- PopGenReport::run.popgensim(simpops, steps=100, cost.mat, n.offspring=para$n.offspring, n.ind=para$n.ind, para$mig.rate, para$disp.max, para$disp.rate,  para$n.allels, para$mut.rate, n.cov=para$n.cov, rec="none")
+simpops <- PopGenReport::run.popgensim(simpops, steps=10, cost.mat, n.offspring=para$n.offspring, n.ind=para$n.ind, para$mig.rate, para$disp.max, para$disp.rate,  para$n.allels, para$mut.rate, n.cov=para$n.cov, rec="none")
 #convert to genind object (smaller)
 gi <- PopGenReport::pops2genind(simpops)
 
@@ -130,15 +130,11 @@ round(mmod::pairwise_Gst_Nei(gi),3)
 #run the simulation as before
 #record summary statistc and restistance value
 
-<<<<<<< HEAD
+
 #github names
 # marcosci
 # sangeetabhatia03
 # mvanack
-=======
-
-
->>>>>>> a3d3d7950d1a8566cbd47838e2ce90520bc8cae3
 
 
 
