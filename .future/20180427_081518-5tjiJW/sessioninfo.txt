@@ -1,0 +1,24 @@
+R version 3.4.4 (2018-03-15)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu Bionic Beaver (development branch)
+
+Matrix products: default
+BLAS: /usr/lib/x86_64-linux-gnu/openblas/libblas.so.3
+LAPACK: /usr/lib/x86_64-linux-gnu/libopenblasp-r0.2.20.so
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C               LC_TIME=de_DE.UTF-8        LC_COLLATE=en_US.UTF-8     LC_MONETARY=de_DE.UTF-8   
+ [6] LC_MESSAGES=en_US.UTF-8    LC_PAPER=de_DE.UTF-8       LC_NAME=C                  LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=de_DE.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] listenv_0.7.0           future.batchtools_0.6.0 future.apply_0.1.0      future_1.8.0           
+
+loaded via a namespace (and not attached):
+ [1] codetools_0.2-15    batchtools_0.9.8    prettyunits_1.0.2   crayon_1.3.4        withr_2.1.2         assertthat_0.2.0    digest_0.6.15      
+ [8] rappdirs_0.3.1      R6_2.2.2            backports_1.1.2     magrittr_1.5        debugme_1.1.0       progress_1.1.2      stringi_1.1.7      
+[15] rstudioapi_0.7      data.table_1.10.4-3 brew_1.0-6          checkmate_1.8.5     tools_3.4.4         parallel_3.4.4      compiler_3.4.4     
+[22] base64url_1.3       globals_0.11.0     

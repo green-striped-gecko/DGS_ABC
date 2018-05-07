@@ -70,7 +70,7 @@ res <- abc(target = obs_stats,
            sumstat = sim_stats,
            tol = 0.05, method="neuralnet")
 
-
+summary(res)
 ```
 
 ## Diagnostics
