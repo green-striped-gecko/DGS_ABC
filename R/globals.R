@@ -18,14 +18,14 @@ disp_max    =   50,    # average  dispersal of an individual in map units ----
 disp_rate   = 0.05,    # proportion of dispersing individuals ----
 
 # Define genetics
-n_allels    =    10,       # number of alleles ----
-n_loci      =    20,       # number of alleles ----
+n_allels    =    2,       # number of alleles ----
+n_loci      =    50,       # number of alleles ----
 mut_rate    = 0.001,       # mutation rate ----
 method      = "leastcost", #rSPDdistance, commute (explore similarity to circuitscape) ----
 NN          = 8,           #number of neighbours for the cost distance method ----
 steps       = 100,          # steps for the genetic simulation
 
 # Resistance values to be used in our simulation ----
-resistance = 1:20,
-rep_resistance = 1:100000
+
+rep_resistance = 1:1000
 )

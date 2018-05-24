@@ -8,13 +8,15 @@ simulate_landscape_discrete <- function(ncol,
                                         ...){
     
     if (type == "saura") {
-        tempmask <- secr::make.mask(nx = ncol,
-                                    ny = nrow,
-                                    spacing = 1)
+    	  temptrap <- secr::make.mask(nx = ncol,
+    	  														ny = nrow,spacing=1
+    	  														)
+        tempmask <- secr::make.mask(temptrap, spacing = 1)
         r <- secr::raster(randomHabitat(tempmask,
                                         p = 0.5,
                                         A = 0.5))   
-    }
+        r[is.na(r)] <- 0
+        }
     
     if (type == "randomcluster") {
         r <- nlm_randomcluster(ncol,
@@ -52,10 +54,10 @@ simulate_landscape_discrete <- function(ncol,
     
     
     # binarize continouos landscapes
-    if (length(raster::values(r)) > 2) {
-        r <- util_classify(r, if (!exists("ratio")) {
-                                 c(0.5, 0.5)} else ratio)
-    }
+  #  if (length(raster::values(r)) > 2) {
+  #      r <- util_classify(r, if (!exists("ratio")) {
+  #                               c(0.5, 0.5)} else ratio)
+  #  }
     
     return(r)
 }

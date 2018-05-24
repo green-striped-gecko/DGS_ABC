@@ -76,13 +76,15 @@ sim_pops <- function(pops_in,
                              rec = "none")
 }
 
-simulate_abc <- function(resistance, rep_resistance) {
-    
-    new_landscape <- set_resistance(landscape, resistance)
-    
-    plan(multisession)  
-    summary_stat <- future_lapply(rep_resistance,
-                                  FUN = function(x) { pop_sim <- sim_pops(pop_new,
+simulate_abc <- function(rep_resistance) {
+     
+		
+		summary_stat <- future.apply::future_lapply(rep_resistance,
+                                  FUN = function(x) { 
+                                  	resistance <- runif(1,1,20)
+                                  	new_landscape <- set_resistance(landscape, resistance)
+                                  	
+                                  	pop_sim <- sim_pops(pop_new,
                                                                           para$steps, 
                                                                           para$n_offspring,
                                                                           para$n_ind,
@@ -99,9 +101,13 @@ simulate_abc <- function(resistance, rep_resistance) {
     
                                                       #possible summary statistics
                                                       gi <- PopGenReport::pops2genind(pop_sim)
-                                                      summary_stat <- round(PopGenReport::pairwise.fstb(gi),3)}
+                                                      summary_stat <- round(PopGenReport::pairwise.fstb(gi),3)
+                                                      return(list(resistance = resistance, summary_stat = summary_stat, pop=gi))
+                                                      
+                                                      
+                                                      
+                                                      }
                                 )
     
-    return(list(resistance = resistance, summary_stat = summary_stat))
-    
+return(summary_stat)    
 }

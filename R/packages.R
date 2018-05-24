@@ -6,7 +6,7 @@
 
 library("secr")
 library("raster")
-library("NLMR")
+#library("NLMR")
 library("landscapetools")
 library("spatstat")
 library("maptools")
