@@ -44,17 +44,22 @@ pop_new <- init_pops(n_pops    =  para$n_pops,
 
 
 
-paras <-  expand.grid(rep=1:50)
+paras <-  expand.grid(rep=1:1000)
 
 
-y <- simulate_abc(1:nrow(paras))
+system.time(y <- simulate_abc(1:nrow(paras)))
 
 y.obs <- simulate_abc(1)
 
-res <- data.frame(ss= rep(NA,50), r=rep(NA,50))
-res$ss<- sapply(1:50, function(x) sum(as.dist(y[[x]]$summary_stat)-as.dist(y.obs[[1]]$summary_stat)^2)   )
-res$r <- sapply(1:50, function(x) y[[x]]$resistance)
+
+nn <- length(y)
+res <- data.frame(ss= rep(NA,nn), r=rep(NA,nn))
+res$ss<- sapply(1:nn, function(x) sum(as.dist(y[[x]]$summary_stat)-as.dist(y.obs[[1]]$summary_stat)^2)   )
+res$r <- sapply(1:nn, function(x) y[[x]]$resistance)
 
 
+th <- quantile(res$ss,0.05)
+plot(res[res$ss<th,2:1])
+res[res$ss<th,2:1]
 
 									

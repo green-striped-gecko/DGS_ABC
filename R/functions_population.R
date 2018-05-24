@@ -116,7 +116,7 @@ simulate_abc <- function(runs) {
 				summary_stat = sum_stat,
 				pop = gi
 			))
-			
 			return(summary_stat)
-		}
+		})
+}
 		
