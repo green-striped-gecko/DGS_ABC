@@ -2,12 +2,12 @@ library(ResistanceGA)
 
 
 
-asc <- landscape
-plot(asc)
+
+plot(landscape)
 
 #locale <- samples
 sp <- SpatialPoints(pops)
-
+points(sp)
 
 GA.inputs <- GA.prep(ASCII.dir = landscape,
 										 Results.dir = "D:/Temp/ResGA/",
@@ -28,8 +28,9 @@ gdist.inputs <- gdist.prep(n.Pops = length(sp),
 
 #Sim data
 #true.dist <- 
-gd <-c(as.dist(pairwise.fstb(y[[1]]$pop))) 
-plot(true.dist ~ gd)
+gd <-c(as.dist(pairwise.fstb(y.obs[[1]]$pop))) 
+cd <- c(as.dist(costdistances(landscape, pops, method = "leastcost",NN = 8)))
+plot(gd ~ cd)
 
 plot(landscape)
 plot(sp, add = T)
@@ -37,10 +38,10 @@ plot(sp, add = T)
 gdist.inputs <- gdist.prep(n.Pops = length(sp),
 													 method = "costDistance",
 													 samples = sp,
-													 response = gd
+													 response = gd,
 )
 
 ss.results <- SS_optim(gdist.inputs = gdist.inputs,
-											 GA.inputs = GA.inputs)
+											 GA.inputs = GA.inputs, )
 
 ss.results$CategoricalResults
