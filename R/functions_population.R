@@ -79,11 +79,11 @@ sim_pops <- function(pops_in,
 	)
 }
 
-simulate_abc <- function(runs) {
+simulate_abc <- function(runs, set_res=NULL) {
 	summary_stat <- future.apply::future_lapply(
 		runs,
 		FUN = function(x) {
-			resistance <- runif(1, 1, 20)
+			if (is.null(set_res)) resistance <- runif(1, 1, 20) else resistance <- set_res 
 			#set parameter
 			#
 			new_landscape <-

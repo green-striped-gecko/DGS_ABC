@@ -2,7 +2,6 @@
 source("R/packages.R")
 source("R/functions_landscape.R")
 source("R/functions_population.R")
-source("R/globals.R")
 
 # Set up access to remote login node
 # login_vpn <- tweak(remote, workers = "msciain@login.gwdg.de") # doesn't work because R not installed
@@ -25,13 +24,24 @@ source("R/globals.R")
 
 plan(list(multiprocess, multiprocess, multiprocess))
 
+#set parameters...
+source("R/globals.R")
+
 # simulate initial landscape ----
-landscape <- nlm_randomcluster(para$n_col,                                      para$n_row, p=0.5)
+landscape <- nlm_randomcluster(para$n_col,                                      para$n_row, p=para$ratio)
+
+landscape <- landscape -1
+
+
+
 
 # distribute populations across the landscape ----
-pops <- create_pops(para$n_pops, 
-                    2,
-                    landscape)
+pops <- create_pops(n = para$n_pops, 
+                    mindist = 5,
+                    landscape = landscape)
+
+plot(landscape)
+points(pops, pch=16)
 
 # initialize the populations ----
 pop_new <- init_pops(n_pops    =  para$n_pops,
@@ -44,12 +54,16 @@ pop_new <- init_pops(n_pops    =  para$n_pops,
 
 
 
-paras <-  expand.grid(rep=1:1000)
+paras <-  expand.grid(rep=1:1)
+paras <-  expand.grid(rep=1:200)
 
 
 system.time(y <- simulate_abc(1:nrow(paras)))
 
-y.obs <- simulate_abc(1)
+set_resis <- 5
+system.time(y.obs <- simulate_abc(1, set_res=set_resis))
+
+
 
 
 nn <- length(y)
@@ -59,7 +73,9 @@ res$r <- sapply(1:nn, function(x) y[[x]]$resistance)
 
 
 th <- quantile(res$ss,0.05)
-plot(res[res$ss<th,2:1])
-res[res$ss<th,2:1]
+plot(density(res[res$ss<th,2]))
+table(round(res[res$ss<th,2]))
+
+abline(v=set_resis)
 
 									
