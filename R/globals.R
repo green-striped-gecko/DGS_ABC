@@ -23,9 +23,9 @@ n_loci      =    50,       # number of alleles ----
 mut_rate    = 0.001,       # mutation rate ----
 method      = "leastcost", #rSPDdistance, commute (explore similarity to circuitscape) ----
 NN          = 8,           #number of neighbours for the cost distance method ----
-steps       = 100,          # steps for the genetic simulation
+steps       = 10,          # steps for the genetic simulation
 
 # Resistance values to be used in our simulation ----
 
-rep_resistance = 1:1000
+rep_resistance = 1:7
 )
