@@ -38,7 +38,7 @@ plot(sp, add = T)
 gdist.inputs <- gdist.prep(n.Pops = length(sp),
 													 method = "costDistance",
 													 samples = sp,
-													 response = gd,
+													 response = gd
 )
 
 ss.results <- SS_optim(gdist.inputs = gdist.inputs,

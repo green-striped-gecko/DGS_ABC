@@ -63,18 +63,38 @@ system.time(y <- simulate_abc(1:nrow(paras)))
 set_resis <- 5
 system.time(y.obs <- simulate_abc(1, set_res=set_resis))
 
-
-
+library(mmod)
+load("d:/bernd/projects/dgs/2018/y2.rdata")
 
 nn <- length(y)
 res <- data.frame(ss= rep(NA,nn), r=rep(NA,nn))
-res$ss<- sapply(1:nn, function(x) sum(as.dist(y[[x]]$summary_stat)-as.dist(y.obs[[1]]$summary_stat)^2)   )
+res$pfst<- sapply(1:nn, function(x) sum( (as.dist(y[[x]]$summary_stat)-as.dist(y.obs[[1]]$summary_stat))^2)   )
+
+res$mfst<- sapply(1:nn, function(x)  (mean(pairwise.fstb(y[[x]]$pop)) - mean(pairwise.fstb(y.obs[[1]]$pop)) )^2   )
+
+res$propShared<- sapply(1:nn, function(x)  sum((propShared(y[[x]]$pop) - propShared(y.obs[[1]]$pop))^2) )
+
+res$pGst<- sapply(1:nn, function(x)  sum(((pairwise_Gst_Nei(y[[x]]$pop)) - pairwise_Gst_Nei(y.obs[[1]]$pop)) ^2)   )
+
+res$pGstH<- sapply(1:nn, function(x)  sum(((pairwise_Gst_Hedrick(y[[x]]$pop)) - pairwise_Gst_Hedrick(y.obs[[1]]$pop)) ^2)   )
+
+
+res$indGD <- sapply(1:nn, function(x)
+	{
+	gl <-gi2gl((y[[x]]$pop))
+	gl.obs <-gi2gl((y.obs[[1]]$pop))
+	sum( dist(as.matrix(gl)-as.matrix(gl.obs)))
+})
+
+
 res$r <- sapply(1:nn, function(x) y[[x]]$resistance)
 
 
-th <- quantile(res$ss,0.05)
-plot(density(res[res$ss<th,2]))
-table(round(res[res$ss<th,2]))
+ss <- res$propShared
+
+th <- quantile(ss,0.1)
+plot(density(res[ss<th,2]))
+table(round(res[ss<th,2]))
 
 abline(v=set_resis)
 
