@@ -24,3 +24,5 @@ vignettes/*.pdf
 *.knit.md
 .Rproj.user
 DGS_ABC.Rproj
+y.rdata
+res_pSp1000.rds

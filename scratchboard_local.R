@@ -3,6 +3,8 @@ source("R/packages.R")
 source("R/functions_landscape.R")
 source("R/functions_population.R")
 
+
+
 # Set up access to remote login node
 # login_vpn <- tweak(remote, workers = "msciain@login.gwdg.de") # doesn't work because R not installed
 #login <- tweak(remote, workers = "gwdu101.gwdg.de", user = 'msciain')
@@ -55,7 +57,7 @@ pop_new <- init_pops(n_pops    =  para$n_pops,
 
 
 paras <-  expand.grid(rep=1:1)
-paras <-  expand.grid(rep=1:200)
+paras <-  expand.grid(rep=1:10000)
 
 
 system.time(y <- simulate_abc(1:nrow(paras)))
@@ -64,38 +66,50 @@ set_resis <- 5
 system.time(y.obs <- simulate_abc(1, set_res=set_resis))
 
 library(mmod)
-load("d:/bernd/projects/dgs/2018/y2.rdata")
+#load("d:/bernd/projects/dgs/2018/y2.rdata")
 
 nn <- length(y)
-res <- data.frame(ss= rep(NA,nn), r=rep(NA,nn))
-res$pfst<- sapply(1:nn, function(x) sum( (as.dist(y[[x]]$summary_stat)-as.dist(y.obs[[1]]$summary_stat))^2)   )
+res <- data.frame(r=rep(NA,nn))
+res$pfst<- unlist(future.apply::future_lapply(1:nn, function(x) sum( (as.dist(y[[x]]$summary_stat)-as.dist(y.obs[[1]]$summary_stat))^2)   ))
 
-res$mfst<- sapply(1:nn, function(x)  (mean(pairwise.fstb(y[[x]]$pop)) - mean(pairwise.fstb(y.obs[[1]]$pop)) )^2   )
-
-res$propShared<- sapply(1:nn, function(x)  sum((propShared(y[[x]]$pop) - propShared(y.obs[[1]]$pop))^2) )
-
-res$pGst<- sapply(1:nn, function(x)  sum(((pairwise_Gst_Nei(y[[x]]$pop)) - pairwise_Gst_Nei(y.obs[[1]]$pop)) ^2)   )
-
-res$pGstH<- sapply(1:nn, function(x)  sum(((pairwise_Gst_Hedrick(y[[x]]$pop)) - pairwise_Gst_Hedrick(y.obs[[1]]$pop)) ^2)   )
+res$mfst<- unlist(future.apply::future_lapply(1:nn, function(x)  (mean(pairwise.fstb(y[[x]]$pop)) - mean(pairwise.fstb(y.obs[[1]]$pop)) )^2   ))
 
 
-res$indGD <- sapply(1:nn, function(x)
-	{
-	gl <-gi2gl((y[[x]]$pop))
-	gl.obs <-gi2gl((y.obs[[1]]$pop))
-	sum( dist(as.matrix(gl)-as.matrix(gl.obs)))
-})
+res$pSp<- unlist(future.apply::future_lapply(1:nn, function(x)  sum((pairwise.propShared(y[[x]]$pop) - pairwise.propShared(y.obs[[1]]$pop))^2) ))
+
+
+#res$pGst<- unlist(future.apply::future_lapply(1:nn, function(x)  sum(((pairwise_Gst_Nei(y[[x]]$pop)) - pairwise_Gst_Nei(y.obs[[1]]$pop)) ^2)   ))
+
+#res$pGstH<- unlist(future.apply::future_lapply(1:nn, function(x)  sum(((pairwise_Gst_Hedrick(y[[x]]$pop)) - pairwise_Gst_Hedrick(y.obs[[1]]$pop)) ^2)))
+
+
+#res$indGD <- unlist(future.apply::future_lapply(1:nn, function(x)
+#	{
+#	gl <-gi2gl((y[[x]]$pop))
+#	gl.obs <-gi2gl((y.obs[[1]]$pop))
+#	sum( dist(as.matrix(gl)-as.matrix(gl.obs)))
+#}))
+
+
+
 
 
 res$r <- sapply(1:nn, function(x) y[[x]]$resistance)
 
+par(mfrow=c(1,2))
 
-ss <- res$propShared
+for(i in c(2:3))
+{
+ss <- res[,i]
 
-th <- quantile(ss,0.1)
-plot(density(res[ss<th,2]))
-table(round(res[ss<th,2]))
+th <- quantile(ss,0.001)
+plot(density(res[ss<th,1]), main=colnames(res)[i])
+#table(round(res[ss<th,2]))
 
 abline(v=set_resis)
 
-									
+}									
+
+
+
+
